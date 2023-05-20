@@ -1,0 +1,11 @@
+.content {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: #000;
+
+  canvas {
+    width: 600px;
+    height: 600px;
+  }
+}
