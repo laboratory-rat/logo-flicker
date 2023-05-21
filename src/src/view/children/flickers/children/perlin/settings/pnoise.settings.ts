@@ -1,4 +1,4 @@
-import {DisplayOptionsFor} from "../core/options";
+import {DisplayOptionsFor} from "../../../../../../patterns/core/options";
 
 export type PNoiseOptions = {
     canvasId: string;

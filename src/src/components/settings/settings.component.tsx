@@ -1,11 +1,18 @@
 import {FC, FormEvent, useEffect, useState} from "react";
 import './settings.component.scss';
-import {PNoiseDisplayOptions} from "../../../patterns/pnoise/pnoise.options";
-import {OptionsForNumber, OptionsForString} from "../../../patterns/core/options";
+import {
+    PNoiseDisplayOptions,
+    PNoiseOptions
+} from "../../view/children/flickers/children/perlin/settings/pnoise.settings";
+import {DisplayOptionsFor, OptionsForNumber, OptionsForString} from "../../patterns/core/options";
+import {
+    RadialDisplaySettings,
+    RadialSettings
+} from "../../view/children/flickers/children/radial/settings/radial.settings";
 
 type SettingsProps = {
-    options: PNoiseDisplayOptions;
-    setOptions: (item: PNoiseDisplayOptions) => unknown;
+    options: DisplayOptionsFor<PNoiseOptions | RadialSettings>;
+    setOptions: (item: PNoiseDisplayOptions | RadialDisplaySettings) => unknown;
 }
 
 const SettingsComponent: FC<SettingsProps> = ({options, setOptions: _setOptions}) => {
@@ -21,7 +28,7 @@ const SettingsComponent: FC<SettingsProps> = ({options, setOptions: _setOptions}
     }
 
     const updateOption = (key: keyof PNoiseDisplayOptions, value: number | string) => {
-        const currentProp = innerOptions[key];
+        const currentProp = (innerOptions as any)[key];
         if (currentProp.type === 'number') {
             const parsedVal = parseFloat(value as string);
             if (isNaN(parsedVal)) {
