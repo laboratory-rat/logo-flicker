@@ -20,7 +20,7 @@ const setup = ({
                backgroundColor: string = '#000'
 ): CleanupCallback => {
     const two = new Two({
-        type: Two.Types.canvas,
+        type: Two.Types.svg,
         fullscreen: false,
         autostart: true,
         fitted: true,
@@ -58,13 +58,12 @@ const setup = ({
     });
 
     two.bind('update',  (currentFrame: number) => {
-        if (iteration !== selfIteration) {
-            return;
-        }
-
         for (const item of allItems) {
+            if (iteration !== selfIteration) {
+                return;
+            }
+
             const noise = p5.prototype.noise(item.position.x * noiseScale, item.position.y * noiseScale, currentFrame * speed);
-            // const noise = 0.54;
             const roundedNoise = Math.round(noise * 100) / 100;
             const newScale = roundedNoise * imageScale;
 
