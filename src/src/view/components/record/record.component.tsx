@@ -50,8 +50,7 @@ const RecordComponent: FC<RecordComponentProps> = () => {
                 console.error('Unknown state', state);
                 break;
         }
-    }, [state])
-
+    }, [startRecording, stopRecording, state])
 
     return (
         <div className={'record-content'}>

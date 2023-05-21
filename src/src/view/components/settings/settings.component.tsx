@@ -1,10 +1,7 @@
-import {
-    OptionsForNumber,
-    OptionsForString,
-    PNoiseDisplayOptions
-} from "../../patterns/pnoise/pnoise.options";
 import {FC, FormEvent, useEffect, useState} from "react";
 import './settings.component.scss';
+import {PNoiseDisplayOptions} from "../../../patterns/pnoise/pnoise.options";
+import {OptionsForNumber, OptionsForString} from "../../../patterns/core/options";
 
 type SettingsProps = {
     options: PNoiseDisplayOptions;

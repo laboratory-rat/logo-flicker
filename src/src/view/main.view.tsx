@@ -1,12 +1,12 @@
 import './main.view.scss';
-import SettingsComponent from "./components/settings.component";
+import SettingsComponent from "./components/settings/settings.component";
 import {
     defaultPNoiseDisplayOptions,
     displayOptionsToOptions,
 } from "../patterns/pnoise/pnoise.options";
 import {useMemo, useState} from "react";
 import usePNoiseRender from "../patterns/pnoise/pnoise.engine";
-import ColorPickerComponent from "./components/color-picker.component";
+import ColorPickerComponent from "./components/color-picker/color-picker.component";
 
 const canvasId = 'canvas';
 const defaultOptions = defaultPNoiseDisplayOptions(canvasId);

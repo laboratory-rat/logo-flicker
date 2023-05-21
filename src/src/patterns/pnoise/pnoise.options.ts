@@ -1,31 +1,8 @@
-export type OptionsForNumber = {
-    type: 'number';
-    ignore: boolean;
-    value: number;
-    label: string;
-    min: number;
-    max: number;
-    step: number;
-}
-
-export type OptionsForString = {
-    type: 'string';
-    ignore: boolean;
-    value: string;
-    label: string;
-    options: string[];
-}
-
-export type DisplayOptionsFor<TOptions> = {
-    [key in keyof TOptions]: TOptions[key] extends number
-        ? OptionsForNumber
-        : TOptions[key] extends string
-            ? OptionsForString
-            : never;
-}
+import {DisplayOptionsFor} from "../core/options";
 
 export type PNoiseOptions = {
     canvasId: string;
+    noiseType: string;
     spaceBetween: number;
     imageSource: string;
     imageScale: number;
@@ -39,13 +16,21 @@ export type PNoiseOptions = {
 
 export type PNoiseDisplayOptions = DisplayOptionsFor<PNoiseOptions>;
 
-export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOptions =>  ({
+export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOptions => ({
     canvasId: {
         type: 'string',
         ignore: true,
         options: [canvasId],
         value: canvasId,
         label: 'Canvas ID',
+    },
+
+    noiseType: {
+        type: 'string',
+        ignore: false,
+        value: 'perlin',
+        options: ['perlin', 'simplex'],
+        label: 'Noise type',
     },
 
     noiseScale: {
@@ -144,6 +129,7 @@ export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOpti
 
 export const displayOptionsToOptions = (displayOptions: PNoiseDisplayOptions): PNoiseOptions => ({
     canvasId: displayOptions.canvasId.value,
+    noiseType: displayOptions.noiseType.value,
     noiseScale: displayOptions.noiseScale.value,
     imageScale: displayOptions.imageScale.value,
     imageSource: displayOptions.imageSource.value,
