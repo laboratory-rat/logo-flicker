@@ -62,7 +62,7 @@ export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOpti
         ignore: false,
         value: 0.07,
         min: 0.01,
-        max: 1,
+        max: 10,
         step: 0.01,
         label: 'Image scale',
     },
@@ -74,6 +74,7 @@ export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOpti
         label: 'Image source',
         options: [
             './logo-flicker/img/logos/blue.svg',
+            './logo-flicker/img/logos/blue-small.svg',
             './logo-flicker/img/logos/white.svg',
             './logo-flicker/img/logos/black.svg',
         ],

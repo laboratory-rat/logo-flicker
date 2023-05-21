@@ -17,9 +17,10 @@ const setup = ({
                    hideUnder
                }: PNoiseOptions,
                selfIteration: number,
+               backgroundColor: string = '#000'
 ): CleanupCallback => {
     const two = new Two({
-        type: Two.Types.svg,
+        type: Two.Types.canvas,
         fullscreen: false,
         autostart: true,
         fitted: true,
@@ -30,7 +31,14 @@ const setup = ({
     const cols = Math.floor(two.width / (gridSize + spaceBetween - padding));
     const rows = Math.floor(two.height / (gridSize + spaceBetween - padding));
     const allItems: any[] = [];
-    let currentFrame = 0;
+
+    const cx = two.width * 0.5;
+    const cy = two.height * 0.5;
+    const background = two.makeRectangle(cx, cy, two.width, two.height);
+    background.noStroke();
+    background.fill = backgroundColor;
+    const container = two.makeGroup(background);
+    two.add(container);
 
     two.load(imageSource, (svgGroup: any) => {
         if (selfIteration !== iteration) {
@@ -49,26 +57,14 @@ const setup = ({
         }
     });
 
-    iteration === selfIteration && two.update();
-
-    const animate = () => {
+    two.bind('update',  (currentFrame: number) => {
         if (iteration !== selfIteration) {
             return;
         }
 
-        update();
-        two.update();
-        currentFrame++;
-        requestAnimationFrame(animate)
-    }
-
-    const update = () => {
         for (const item of allItems) {
-            if (iteration !== selfIteration) {
-                return;
-            }
-
             const noise = p5.prototype.noise(item.position.x * noiseScale, item.position.y * noiseScale, currentFrame * speed);
+            // const noise = 0.54;
             const roundedNoise = Math.round(noise * 100) / 100;
             const newScale = roundedNoise * imageScale;
 
@@ -84,9 +80,7 @@ const setup = ({
             item.scale = newScale;
             item.opacity = roundedNoise;
         }
-    };
-
-    requestAnimationFrame(animate);
+    });
 
     return () => {
         for (const item of allItems) {
@@ -94,20 +88,21 @@ const setup = ({
         }
 
         two.clear();
+        two.unbind('update');
         const twoChild = two.renderer.domElement;
         twoChild.parentNode && twoChild.parentNode.removeChild(twoChild);
     }
 };
 
-const usePNoiseRender = (props: PNoiseOptions) => {
+const usePNoiseRender = (props: PNoiseOptions, backgroundColor: string) => {
     useEffect(() => {
         iteration++;
-        const cleanup = setup(props, iteration);
+        const cleanup = setup(props, iteration, backgroundColor);
 
         return () => {
             cleanup();
         };
-    }, [props]);
+    }, [props, backgroundColor]);
 }
 
 export default usePNoiseRender;
