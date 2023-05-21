@@ -7,10 +7,10 @@ const MainView = () => {
             <nav>
                 <ul>
                     <li>
-                        <a href="/logo-flicker/flickers/perlin">Perlin</a>
+                        <a href="/#/flickers/perlin">Perlin</a>
                     </li>
                     <li>
-                        <a href="/logo-flicker/flickers/radial">radial</a>
+                        <a href="/#/flickers/radial">Radial</a>
                     </li>
                 </ul>
             </nav>

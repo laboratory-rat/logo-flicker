@@ -26,7 +26,7 @@ const RadialView = () => {
         <div className="container">
             <div className={'content'}>
                 <div className={'content__title'}>
-                    <div>Logo flicker</div>
+                    <div>Radial Logo Flicker</div>
                     <ColorPickerComponent color={bgColor} handleSetColor={setBgColor} />
                 </div>
                 <div className={'content__playground'}>

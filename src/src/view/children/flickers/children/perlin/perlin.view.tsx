@@ -20,7 +20,7 @@ const PerlinView = () => {
         <div className="container">
             <div className={'content'}>
                 <div className={'content__title'}>
-                    <div>Logo flicker</div>
+                    <div>Perlin Logo Flicker</div>
                     <ColorPickerComponent color={bgColor} handleSetColor={setBgColor} />
                 </div>
                 <div className={'content__playground'}>
