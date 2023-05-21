@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/logo-flicker/static/css/main.f16aa6da.css",
-    "main.js": "/logo-flicker/static/js/main.c8292f65.js",
+    "main.css": "/logo-flicker/static/css/main.5db2df96.css",
+    "main.js": "/logo-flicker/static/js/main.9610b379.js",
     "static/js/787.40b5365c.chunk.js": "/logo-flicker/static/js/787.40b5365c.chunk.js",
     "index.html": "/logo-flicker/index.html",
-    "main.f16aa6da.css.map": "/logo-flicker/static/css/main.f16aa6da.css.map",
-    "main.c8292f65.js.map": "/logo-flicker/static/js/main.c8292f65.js.map",
+    "main.5db2df96.css.map": "/logo-flicker/static/css/main.5db2df96.css.map",
+    "main.9610b379.js.map": "/logo-flicker/static/js/main.9610b379.js.map",
     "787.40b5365c.chunk.js.map": "/logo-flicker/static/js/787.40b5365c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f16aa6da.css",
-    "static/js/main.c8292f65.js"
+    "static/css/main.5db2df96.css",
+    "static/js/main.9610b379.js"
   ]
 }
