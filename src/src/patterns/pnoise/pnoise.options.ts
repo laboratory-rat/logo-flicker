@@ -70,12 +70,12 @@ export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOpti
     imageSource: {
         type: 'string',
         ignore: false,
-        value: '/img/logos/blue.svg',
+        value: './logo-flicker/img/logos/blue.svg',
         label: 'Image source',
         options: [
-            '/img/logos/blue.svg',
-            '/img/logos/white.svg',
-            '/img/logos/black.svg',
+            './logo-flicker/img/logos/blue.svg',
+            './logo-flicker/img/logos/white.svg',
+            './logo-flicker/img/logos/black.svg',
         ],
     },
 
