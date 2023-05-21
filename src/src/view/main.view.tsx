@@ -1,25 +1,36 @@
-import useRender from "./main.engine";
 import './main.view.scss';
+import SettingsComponent from "./components/settings.component";
+import {
+    defaultPNoiseDisplayOptions,
+    displayOptionsToOptions,
+} from "../patterns/pnoise/pnoise.options";
+import {useMemo, useState} from "react";
+import usePNoiseRender from "../patterns/pnoise/pnoise.engine";
+import ColorPickerComponent from "./components/color-picker.component";
 
 const canvasId = 'canvas';
-
-const props = {
-    canvasId: canvasId,
-    noiseScale: 0.005,
-    imageScale: 0.07,
-    imageSource: '/img/logos/blue.svg',
-    spaceBetween: 30,
-    cellSize: 2,
-    speed: 0.05,
-    hideUnder: 0.2,
-}
+const defaultOptions = defaultPNoiseDisplayOptions(canvasId);
 
 const MainView = () => {
-    useRender(props);
+    const [displayOptions, setDisplayOptions] = useState(defaultOptions);
+    const options = useMemo(() => displayOptionsToOptions(displayOptions), [displayOptions]);
+    const [bgColor, setBgColor] = useState('#e5e5e5');
+    usePNoiseRender(options);
 
     return (
-        <div className={'content'}>
-            <canvas id={canvasId}></canvas>
+        <div className="container" style={{'background': bgColor}}>
+            <div className={'content'}>
+                <div className={'content__title'}>
+                    <div>Logo flicker</div>
+                    <ColorPickerComponent color={bgColor} handleSetColor={setBgColor} />
+                </div>
+                <div className={'content__playground'}>
+                    <div className={'content__playground-canvas'} id={canvasId}></div>
+                    <div className={'content__playground-settings'}>
+                        <SettingsComponent options={displayOptions} setOptions={setDisplayOptions} />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

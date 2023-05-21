@@ -1,29 +1,29 @@
 import * as p5 from 'p5';
 import {useEffect} from "react";
 import Two from 'two.js'
+import {PNoiseOptions} from "./pnoise.options";
 
-const borderPadding = 16;
-export type RenderProps = {
-    canvasId: string;
-    spaceBetween: number;
-    imageSource: string;
-    imageScale: number;
-    noiseScale: number;
-    cellSize: number;
-    speed: number;
-    hideUnder: number;
-}
+let iteration = 0;
+type CleanupCallback = () => unknown;
 
-type ItemWrapper = {
-    item: any;
-    currentScale: number;
-};
-
-const setup = ({ canvasId, noiseScale, imageScale, imageSource, spaceBetween, cellSize, speed, hideUnder }: RenderProps) => {
+const setup = ({
+                   canvasId,
+                   noiseScale,
+                   imageScale,
+                   imageSource,
+                   spaceBetween,
+                   cellSize,
+                   speed,
+                   hideUnder
+               }: PNoiseOptions,
+               selfIteration: number,
+): CleanupCallback => {
     const two = new Two({
-        fullscreen: true,
+        type: Two.Types.svg,
+        fullscreen: false,
         autostart: true,
-    }).appendTo(document.body);
+        fitted: true,
+    }).appendTo(document.getElementById(canvasId) as HTMLElement);
 
     const padding = 16;
     const gridSize = cellSize;  // Define your grid size based on the size of SVG
@@ -33,29 +33,29 @@ const setup = ({ canvasId, noiseScale, imageScale, imageSource, spaceBetween, ce
     let currentFrame = 0;
 
     two.load(imageSource, (svgGroup: any) => {
-        for(let i=0; i<cols; i++) {
-            for(let j=0; j<rows; j++) {
-                // let clonedSvg = svgGroup.clone();
-                // clonedSvg.center().translation.set(i * (gridSize + spaceBetween) + padding, j * (gridSize + spaceBetween) + padding);
-                // two.add(clonedSvg);
-                // allItems.push(clonedSvg);
+        if (selfIteration !== iteration) {
+            return;
+        }
 
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
                 let clonedSvg = svgGroup.clone();
-
-                // Calculate the offset for every second row
                 let xOffset = (j % 2 === 0) ? 0 : (gridSize / 2 + spaceBetween / 2);
-
-                // Position each hexagon
                 clonedSvg.center().translation.set(i * (gridSize + spaceBetween) + padding + xOffset,
-                    j * (Math.sqrt(3)/2 * gridSize + spaceBetween) + padding);
+                    j * (Math.sqrt(3) / 2 * gridSize + spaceBetween) + padding);
                 two.add(clonedSvg);
                 allItems.push(clonedSvg);
             }
         }
     });
-    two.update();
+
+    iteration === selfIteration && two.update();
 
     const animate = () => {
+        if (iteration !== selfIteration) {
+            return;
+        }
+
         update();
         two.update();
         currentFrame++;
@@ -64,9 +64,13 @@ const setup = ({ canvasId, noiseScale, imageScale, imageSource, spaceBetween, ce
 
     const update = () => {
         for (const item of allItems) {
+            if (iteration !== selfIteration) {
+                return;
+            }
+
             const noise = p5.prototype.noise(item.position.x * noiseScale, item.position.y * noiseScale, currentFrame * speed);
             const roundedNoise = Math.round(noise * 100) / 100;
-            const newScale =  roundedNoise * imageScale;
+            const newScale = roundedNoise * imageScale;
 
             if (roundedNoise <= hideUnder) {
                 item.opacity = 0;
@@ -78,23 +82,32 @@ const setup = ({ canvasId, noiseScale, imageScale, imageSource, spaceBetween, ce
             }
 
             item.scale = newScale;
-            // item.opacity = 1 + (1 / Math.log10(roundedNoise));
             item.opacity = roundedNoise;
         }
     };
 
     requestAnimationFrame(animate);
-    return two;
+
+    return () => {
+        for (const item of allItems) {
+            two.remove(item);
+        }
+
+        two.clear();
+        const twoChild = two.renderer.domElement;
+        twoChild.parentNode && twoChild.parentNode.removeChild(twoChild);
+    }
 };
 
-const useRender = (props: RenderProps) => {
+const usePNoiseRender = (props: PNoiseOptions) => {
     useEffect(() => {
-        const two = setup(props);
+        iteration++;
+        const cleanup = setup(props, iteration);
 
         return () => {
-            two.clear();
+            cleanup();
         };
     }, [props]);
 }
 
-export default useRender;
+export default usePNoiseRender;

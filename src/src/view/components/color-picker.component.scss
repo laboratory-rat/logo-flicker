@@ -1,0 +1,26 @@
+.color-picker__button {
+  width: 60px;
+  height: 24px;
+  padding: 4px;
+  background-color: #fff;
+  cursor: pointer;
+
+
+  .color-picker__button-color {
+    width: 100%;
+    height: 100%;
+  }
+
+  .color-picker__modal {
+    position: absolute;
+
+    .color-picker__modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: default;
+    }
+  }
+}

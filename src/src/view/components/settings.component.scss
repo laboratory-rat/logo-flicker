@@ -1,0 +1,13 @@
+.content__playground-settings-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &>div {
+    width: 100%;
+
+    input, select, textarea {
+      width: 100%;
+    }
+  }
+}
