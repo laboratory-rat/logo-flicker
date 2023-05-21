@@ -14,10 +14,10 @@ const setup = ({
                    spaceBetween,
                    cellSize,
                    speed,
-                   hideUnder
+                   hideUnder,
+                   opacity,
                }: PNoiseOptions,
                selfIteration: number,
-               backgroundColor: string = '#000'
 ): CleanupCallback => {
     const two = new Two({
         type: Two.Types.svg,
@@ -32,14 +32,6 @@ const setup = ({
     const rows = Math.floor(two.height / (gridSize + spaceBetween - padding));
     const allItems: any[] = [];
 
-    const cx = two.width * 0.5;
-    const cy = two.height * 0.5;
-    const background = two.makeRectangle(cx, cy, two.width, two.height);
-    background.noStroke();
-    background.fill = backgroundColor;
-    const container = two.makeGroup(background);
-    two.add(container);
-
     two.load(imageSource, (svgGroup: any) => {
         if (selfIteration !== iteration) {
             return;
@@ -51,13 +43,14 @@ const setup = ({
                 let xOffset = (j % 2 === 0) ? 0 : (gridSize / 2 + spaceBetween / 2);
                 clonedSvg.center().translation.set(i * (gridSize + spaceBetween) + padding + xOffset,
                     j * (Math.sqrt(3) / 2 * gridSize + spaceBetween) + padding);
+                clonedSvg.opacity = opacity;
                 two.add(clonedSvg);
                 allItems.push(clonedSvg);
             }
         }
     });
 
-    two.bind('update',  (currentFrame: number) => {
+    two.bind('update', (currentFrame: number) => {
         for (const item of allItems) {
             if (iteration !== selfIteration) {
                 return;
@@ -77,7 +70,6 @@ const setup = ({
             }
 
             item.scale = newScale;
-            item.opacity = roundedNoise;
         }
     });
 
@@ -93,15 +85,15 @@ const setup = ({
     }
 };
 
-const usePNoiseRender = (props: PNoiseOptions, backgroundColor: string) => {
+const usePNoiseRender = (props: PNoiseOptions) => {
     useEffect(() => {
         iteration++;
-        const cleanup = setup(props, iteration, backgroundColor);
+        const cleanup = setup(props, iteration);
 
         return () => {
             cleanup();
         };
-    }, [props, backgroundColor]);
+    }, [props]);
 }
 
 export default usePNoiseRender;

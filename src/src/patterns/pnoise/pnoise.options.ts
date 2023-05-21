@@ -34,6 +34,7 @@ export type PNoiseOptions = {
     speed: number;
     hideUnder: number;
     changeThreshold: number;
+    opacity: number;
 }
 
 export type PNoiseDisplayOptions = DisplayOptionsFor<PNoiseOptions>;
@@ -70,13 +71,13 @@ export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOpti
     imageSource: {
         type: 'string',
         ignore: false,
-        value: './img/logos/blue.svg',
+        value: '/logo-flicker/img/logos/blue.svg',
         label: 'Image source',
         options: [
-            './img/logos/blue.svg',
-            './img/logos/blue-small.svg',
-            './img/logos/white.svg',
-            './img/logos/black.svg',
+            '/logo-flicker/img/logos/blue.svg',
+            '/logo-flicker/img/logos/blue-small.svg',
+            '/logo-flicker/img/logos/white.svg',
+            '/logo-flicker/img/logos/black.svg',
         ],
     },
 
@@ -124,11 +125,21 @@ export const defaultPNoiseDisplayOptions = (canvasId: string): PNoiseDisplayOpti
         type: 'number',
         ignore: false,
         value: 0.005,
-        min: 0.0001,
+        min: 0,
         max: 1,
         step: 0.0001,
         label: 'Change threshold',
-    }
+    },
+
+    opacity: {
+        type: 'number',
+        ignore: false,
+        value: 1,
+        min: 0,
+        max: 1,
+        step: 0.01,
+        label: 'Opacity',
+    },
 });
 
 export const displayOptionsToOptions = (displayOptions: PNoiseDisplayOptions): PNoiseOptions => ({
@@ -141,4 +152,5 @@ export const displayOptionsToOptions = (displayOptions: PNoiseDisplayOptions): P
     hideUnder: displayOptions.hideUnder.value,
     cellSize: displayOptions.cellSize.value,
     changeThreshold: displayOptions.changeThreshold.value,
+    opacity: displayOptions.opacity.value,
 });
